@@ -1,5 +1,64 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+doctype html
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		title= title
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css")
+		link(rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900")
+		link(rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css")
+		link(rel="stylesheet" href="/stylesheets/login.css")
+	body
+		// Name project
+		.pen-title
+			h1 PhotoBook
+		// Start container
+		.container
+			.card
+			.card
+				h1.title Login
+				strong.messages!= messages()
+				form(action="/signin" method="POST")
+					.input-container
+						input#username(type="text" name="username" required="required")
+						label(for="username") Username
+						.bar
+					.input-container
+						input#password(type="password" name="password" required="required")
+						label(for="password") Password
+						.bar
+					.button-container
+						button
+							span Go
+					.footer
+						a(href="#") Forgot your password?
+			// CODE SIGN UP IN HERE
+			.card.alt
+				.toggle
+				h1.title
+					| Register
+					.close
+				form(action="/signup" method="POST")
+					.input-container
+						input#su_username(type="text" name="username" required="required")
+						label(for="su_username") Username
+						.bar
+					.input-container
+						input#su_password(type="password" name="password" required="required")
+						label(for="su_password") Password
+						.bar
+					.input-container
+						input#su_repassword(type="password" name="repassword" required="required")
+						label(for="su_repassword") Repeat Password
+						.bar
+					.button-container
+						button
+							span Next
+			// END CODE SIGNUP
+		.pen-title
+			span
+				| Make 
+				i.fa.fa-code
+				|  by 
+				a(href="http://andytran.me") #Undo
+		script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js")
+		script(src="/javascripts/login.js")

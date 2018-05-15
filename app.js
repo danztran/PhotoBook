@@ -8,6 +8,7 @@ const cookieParser 			= require('cookie-parser');
 const passport 		     	= require('passport');
 const logger 				    = require('morgan');
 const flash 		        = require('connect-flash');
+const expressMessages   = require('express-messages');
 
 const dbconfig = require('./config/dbconfig.js');
 
@@ -41,6 +42,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());// use connect-flash for flash messages stored in session
+app.use((req, res, next) => {
+    res.locals.messages = expressMessages(req, res);
+    next();
+});
 
 // routes
 app.use('/', indexRouter);

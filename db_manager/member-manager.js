@@ -1,32 +1,58 @@
 // model
 var Member = require('../models/member');
-var Group = require('../models/group');
-var User = require('../models/user');
+var groupManager = require('../db_manager/group-manager');
+var userManager = require('../db_manager/user-manager');
 
-module.exports = {
-	create: async function(newMember) {
-		let error = '';
-		// format code
-		await User.findOne({username: newMember.username}, (err, user) => {
-			if (err) error = err;
-			if (!user) error = 'Username not found';
-		})
-		// check code in database
-		await Group.findOne({code: newGroup.code}, (err, group) => {
-			if (err) error = err;
-			if (!group) error = 'Group not found';
-		});
-
-		if (!error) {
-			await new Member(newMember).save((err) => {
-				if (err) error = err;
+var memberManager = {
+	create: function(username, code) {
+		return new Promise((resolve) => {
+			let member = {
+				username: username,
+				groupCode: code
+			}
+			new Member(member).save((err, mem)=> {
+				resolve({error: err, member: mem});
 			});
-		}
-
-		return {error: error, addrs: !error };
+		});
+	},
+	add: function(username, addedUsername, groupCode) {
+		return new Promise(async (resolve) => {
+			// check if member is exists or group&addedUser are null
+			let grouprs = await groupManager.findOne(groupCode);
+			let addedUserrs = await userManager.findOne(addedUsername);
+			let memrs = await matchedMember(username, groupCode);
+			if (grouprs.group && addedUserrs.user && !memrs.member) {
+				// if group, user exist and member is not
+				resolve(await memberManager.create(addedUsername, groupCode));
+			} else {
+				let error = "";
+				if (grouprs.error) error += grouprs.error;
+				if (addedUsername.error) error += addedUsername.error;
+				if (memrs.member) error += "Douplicate Member's data: " + username + " - " + groupCode;
+				resolve({error: error});
+			}
+		});
 	}
+}
+
+// fully check member isExist ?
+function matchedMember(username, groupCode) {
+	return new Promise((resolve) => {
+		let query = {
+			username: username, 
+			groupCode: groupCode
+		}
+		Member.findOne(query, (err, member) => {
+			resolve({
+				error: err,
+				member: member
+			});
+		});
+	});
 }
 
 function isObjectEmpty(obj) {
     return Object.keys(obj).length === 0;
 }
+
+module.exports = memberManager;

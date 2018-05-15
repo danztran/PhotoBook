@@ -10,7 +10,7 @@ const groupsPage = 'groups';
 
 /* GET home page. */
 router.get('/', (req, res) => {
-	if (!req.user) res.render('index', { title: 'PhotoBook' });
+	if (!req.user) res.render('index', { title: 'Sign | PhotoBook' });
 	else res.redirect(groupsPage);
 });
 
@@ -23,20 +23,20 @@ router.post('/signin',
 	}
 );
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', async (req, res, next) => {
 	let newUser = {
 		username: req.body.username,
 		password: req.body.password
 	};
-	console.log(req.body);
-	let result = userManager.signUp(newUser);
-	if (!result.error) {
+	let result = await userManager.signUp(newUser);
+	if (result.error) {
 		req.flash('signupMsg', result.error);
 		res.redirect('/');
-	} else {
-		passport.authenticate('local')(req, res, () => {
-			res.redirect(groupsPage);
-		});
+	} else { // if success created account, auto signin
+		req.flash('signupMsg', "Account successfully created");
+		passport.authenticate('local')(req, res, function () {
+            res.redirect('/groups');
+        })
 	}
 });
 
@@ -46,20 +46,14 @@ router.get('/signout', (req, res) => {
 	res.redirect('/');
 });
 
-router.post('/findUser', (req, res) => {
+router.post('/findUser', async (req, res) => {
 	let username = req.body.username;
-	let result = userManager.findUser(username);
+	let result = await userManager.findOne(username);
+	if (result.user) {
+		result.found = true;
+	}
+	result.user = null;
 	res.send(result);
 });
-
-// function isUser (req, res, next) {
-// 	if (req.isAuthenticated()) return next();
-// 	res.redirect('/');
-// }
-
-// function isVisiter (req, res, next) {
-// 	if (!req.isAuthenticated()) return next();
-// 	res.redirect('groups');
-// }
 
 module.exports = router;

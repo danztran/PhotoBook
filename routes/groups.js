@@ -9,27 +9,25 @@ router.get('/', (req, res) => {
 	res.render('index', { title: 'Groups | PhotoBook' });
 });
 
-router.post('/create', (req, res) => {
+router.post('/create', async (req, res) => {
 	if (!req.user) return res.redirect('../');
-	let newGroup = {
-		name: req.body.groupName,
-		code: req.body.groupCode,
-		date: Date.now()
-	}
-	let result = groupManager.create(newGroup);
-	res.send(result);
+	name = req.body.groupName;
+	code = req.body.groupCode;
+	let result = await groupManager.create(name, code);
+	let memrs = {};
+	// if success create group
+	// create member (add user + group)
+	if (result.group) memrs = await memberManager.create(req.user.username, code);
+	if (!memrs.error) return res.send(result);
+	return res.send(memrs);
 });
 
-router.post('/addMember', (req, res) => {
+router.post('/addMember', async (req, res) => {
 	if (!req.user) return res.redirect('../');
-	let newMember = {
-		username: req.body.username,
-		groupCode: req.body.groupCode
-	}
-	let result = memberManager.create(newMember);
+	let username = req.body.username;
+	let groupCode = req.body.groupCode;
+	let result = await memberManager.add(req.user.username, username, groupCode);
 	res.send(result);
 });
-
-
 
 module.exports = router;
