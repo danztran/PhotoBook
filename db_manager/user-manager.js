@@ -6,32 +6,37 @@ function checkUsername(str) {
  	return str.match(validUsername) ? true : false;
 }
 
-module.exports.signUp = function (newUser) {
-	let done = false;
-	let msg = '';
-	// check valid
-	if (!checkUsername(newUser.username)) {
-		msg = 'Invalid username';
-	} else {
-		// format username
-		newUser.username = newUser.username.toLowerCase().replace(/\s+/g, '');
-		// check username in database
-		User.findOne({username: newUser.username}, (err, user) => {
-			if (err || user) {
-				if (err) msg = err;
-				if (user) msg = 'This username is already taken';
-			} else {
-				// create new user
-				new User(newUser).save((err, user) => {
-					if (err) {
-						msg = err;
-					} else {
-						done = true;
-						msg = 'Created new user ' + user.username;
-					}
-				});
-			}
+module.exports = {
+	signUp: async function(newUser) {
+		let error = '';
+		// check valid
+		if (!checkUsername(newUser.username)) {
+			error = 'Invalid username';
+		} else {
+			// format username
+			newUser.username = newUser.username.toLowerCase().replace(/\s+/g, '');
+			// check username in database
+			await User.findOne({username: newUser.username}, (err, user) => {
+				if (err || user) {
+					if (err) error = err;
+					if (user) error = 'This username is already taken';
+				} else {
+					// create new user
+					new User(newUser).save((err, user) => {
+						if (err) error = err;
+					});
+				}
+			});
+		}
+		return {error: error, user: newUser};
+	},
+	findUser: async function(username) {
+		let error = '';
+		let found = false;
+		await User.findOne({username: username}, (err, user) => {
+			if (err) error = err;
+			else if (user) found = true;
 		});
+		return {error: error, found: found};
 	}
-	return {done: done, msg: msg};
-}
+} 

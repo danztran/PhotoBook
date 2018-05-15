@@ -5,8 +5,8 @@ const router = express.Router();
 const passport = require('../config/passport');
 
 // var User = require('../models/user');
-var userManager = require('../db_manager/user-manager');
-let groupsPage = 'groups';
+const userManager = require('../db_manager/user-manager');
+const groupsPage = 'groups';
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -30,8 +30,8 @@ router.post('/signup', (req, res, next) => {
 	};
 	console.log(req.body);
 	let result = userManager.signUp(newUser);
-	if (!result.done) {
-		req.flash('signupMsg', result.msg);
+	if (!result.error) {
+		req.flash('signupMsg', result.error);
 		res.redirect('/');
 	} else {
 		passport.authenticate('local')(req, res, () => {
@@ -44,6 +44,12 @@ router.get('/signout', (req, res) => {
 	req.flash('status', 'You have logged out');
 	req.logout();
 	res.redirect('/');
+});
+
+router.post('/findUser', (req, res) => {
+	let username = req.body.username;
+	let result = userManager.findUser(username);
+	res.send(result);
 });
 
 // function isUser (req, res, next) {
