@@ -25,12 +25,39 @@ var memberManager = {
 				// if group, user exist and member is not
 				resolve(await memberManager.create(addedUsername, groupCode));
 			} else {
-				let error = "";
-				if (grouprs.error) error += grouprs.error;
-				if (addedUsername.error) error += addedUsername.error;
-				if (memrs.member) error += "Douplicate Member's data: " + username + " - " + groupCode;
+				if (grouprs.error) error = grouprs.error;
+				if (addedUsername.error) error = addedUsername.error;
+				if (memrs.member) error = "Douplicate Member's data: " + username + " - " + groupCode;
 				resolve({error: error});
 			}
+		});
+	},
+	findAllOf: function(username) {
+		return new Promise((resolve) => {
+			let groups = [];
+			Member.find({username: username}, (err, groups) => {
+				if (err) return resolve({error: err});
+				groups.forEach(async (val) => {
+					let grouprs = await groupManager.findOne(val.groupCode);
+					if (grouprs.error) return resolve({error:grouprs.error});
+					if (grouprs.group) val.name = grouprs.name;
+				});
+				resolve({
+					groups: groups
+				});
+			});
+		});
+	},
+	findOne: function(username, groupCode) {
+		return new Promise((resolve) => {
+			let query = {
+				username: username,
+				groupCode: groupCode
+			}
+			Member.findOne(query, (err, member) => {
+				if (err) return resolve({error: err});
+				else resolve({member: member});
+			});
 		});
 	}
 }
@@ -43,16 +70,14 @@ function matchedMember(username, groupCode) {
 			groupCode: groupCode
 		}
 		Member.findOne(query, (err, member) => {
-			resolve({
-				error: err,
-				member: member
-			});
+			if (err) return resolve({error: err});
+			else resolve({member: member});
 		});
 	});
 }
 
 function isObjectEmpty(obj) {
-    return Object.keys(obj).length === 0;
+	return Object.keys(obj).length === 0;
 }
 
 module.exports = memberManager;

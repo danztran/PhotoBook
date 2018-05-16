@@ -6,11 +6,11 @@ const passport = require('../config/passport');
 
 // var User = require('../models/user');
 const userManager = require('../db_manager/user-manager');
-const groupsPage = 'groups';
+const groupsPage = '/groups';
 
 /* GET home page. */
 router.get('/', (req, res) => {
-	if (!req.user) res.render('index', { title: 'Sign | PhotoBook' });
+	if (!req.user) res.render('index', { title: 'Account | PhotoBook' });
 	else res.redirect(groupsPage);
 });
 
@@ -35,8 +35,8 @@ router.post('/signup', async (req, res, next) => {
 	} else { // if success created account, auto signin
 		req.flash('signupMsg', "Account successfully created");
 		passport.authenticate('local')(req, res, function () {
-            res.redirect('/groups');
-        })
+            res.redirect(groupsPage);
+        });
 	}
 });
 

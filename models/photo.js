@@ -2,7 +2,7 @@ const mongoose 		= require('mongoose');
 
 mongoose.Promise 	= global.Promise;
 var PhotoSchema 	= new mongoose.Schema({
-	groupCode: String
+	groupCode: String,
 	title: String,
 	author: String,
 	source: String,

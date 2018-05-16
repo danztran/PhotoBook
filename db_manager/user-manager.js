@@ -34,7 +34,7 @@ var userManager = {
 			}
 		});
 	},
-	findOne: function(username) {
+	findOne: async function(username) {
 		return new Promise((resolve) => 
 			User.findOne({username: username}, (err, user) => {
 				resolve({error: err, user: user});
