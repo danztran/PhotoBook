@@ -13,7 +13,7 @@ module.exports = {
 			// check valid
 			if (!checkGroupname(code)) {
 				error = 'Invalid group code';
-				return reject({error: error});
+				return resolve({error});
 			}
 			// format code
 			code = code.replace(/\s+/g, '');
@@ -22,7 +22,7 @@ module.exports = {
 				if (err || group) {
 					if (err) error = err;
 					if (group) error = 'This group code is already taken';
-					return reject({error: error});
+					return resolve({error});
 				}			
 			});
 
@@ -33,8 +33,8 @@ module.exports = {
 			}
 			// create new group
 			await new Group(newGroup).save((err, group) => {
-				if (err) reject({error: error});
-				resolve({error: err, group: group});
+				if (err) return resolve({error});
+				resolve({error: err, group});
 			});
 			
 		});
@@ -42,7 +42,7 @@ module.exports = {
 	findOne: function(groupCode) {
 		return new Promise((resolve) => 
 			Group.findOne({code: groupCode}, (err, group) => {
-				resolve({error: err, group: group});
+				resolve({error: err, group});
 			})
 		);
 	}

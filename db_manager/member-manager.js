@@ -10,8 +10,8 @@ var memberManager = {
 				username: username,
 				groupCode: code
 			}
-			new Member(member).save((err, mem)=> {
-				resolve({error: err, member: mem});
+			new Member(member).save((error, member)=> {
+				resolve({error, member});
 			});
 		});
 	},
@@ -23,12 +23,12 @@ var memberManager = {
 			let memrs = await matchedMember(username, groupCode);
 			if (grouprs.group && addedUserrs.user && !memrs.member) {
 				// if group, user exist and member is not
-				resolve(await memberManager.create(addedUsername, groupCode));
+				resolve(await this.create(addedUsername, groupCode));
 			} else {
 				if (grouprs.error) error = grouprs.error;
 				if (addedUsername.error) error = addedUsername.error;
 				if (memrs.member) error = "Douplicate Member's data: " + username + " - " + groupCode;
-				resolve({error: error});
+				resolve({error});
 			}
 		});
 	},
@@ -42,21 +42,16 @@ var memberManager = {
 					if (grouprs.error) return resolve({error:grouprs.error});
 					if (grouprs.group) val.name = grouprs.name;
 				});
-				resolve({
-					groups: groups
-				});
+				resolve({groups});
 			});
 		});
 	},
 	findOne: function(username, groupCode) {
 		return new Promise((resolve) => {
-			let query = {
-				username: username,
-				groupCode: groupCode
-			}
-			Member.findOne(query, (err, member) => {
-				if (err) return resolve({error: err});
-				else resolve({member: member});
+			let query = {username, groupCode};
+			Member.findOne(query, (error, member) => {
+				if (err) return resolve({error});
+				else resolve({member});
 			});
 		});
 	}
@@ -65,13 +60,10 @@ var memberManager = {
 // fully check member isExist ?
 function matchedMember(username, groupCode) {
 	return new Promise((resolve) => {
-		let query = {
-			username: username, 
-			groupCode: groupCode
-		}
-		Member.findOne(query, (err, member) => {
-			if (err) return resolve({error: err});
-			else resolve({member: member});
+		let query = {username, groupCode};
+		Member.findOne(query, (error, member) => {
+			if (err) return resolve({error});
+			else resolve({member});
 		});
 	});
 }

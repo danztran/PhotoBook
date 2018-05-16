@@ -62,15 +62,16 @@ router.get('/:groupCode', async (req, res) => {
 	});
 });
 
-router.post('/:groupCode/create', (req, res) => {
+router.post('/:groupCode/upload', (req, res) => {
 	if (!req.user) return res.redirect('../');
 	imgMulter.upload(req, res, async function(err) {
-		let groupCode = req.query.groupCode;
+		let groupCode = req.params.groupCode;
 		let memberrs = {};
 		let grouprs = {};
 		let result = {};
 		// check if user is a member or not
 		if (groupCode) memberrs = await memberManager.findOne(req.user.username, groupCode);
+		if (memberrs.error) return res.send({error: memberrs.error});
 		if (memberrs.member) {
 			let image = req.files.image;
 			// upload to imgur
@@ -91,6 +92,5 @@ router.post('/:groupCode/create', (req, res) => {
 		res.send(result);
 	});
 });
-
 
 module.exports = router;

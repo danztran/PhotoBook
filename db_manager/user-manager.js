@@ -13,31 +13,28 @@ var userManager = {
 			// check valid
 			if (!checkUsername(newUser.username)) {
 				error = 'Invalid username';
-				resolve({error: error});
-			} else {
-				// format username
-				newUser.username = newUser.username.toLowerCase().replace(/\s+/g, '');
-				// check username in database
-				User.findOne({username: newUser.username}, async (err, user) => {
-					if (err || user) {
-						if (err) error = err;
-						if (user) error = 'This username is already taken';
-						resolve({error: error});
-					} else {
-						// create new user
-						new User(newUser).save((err, user) => {
-							if (err) error = err;
-							resolve({error: error, user: user});
-						});
-					}
-				});
+				return resolve({error});
 			}
+			// format username
+			newUser.username = newUser.username.toLowerCase().replace(/\s+/g, '');
+			// check username in database
+			User.findOne({username: newUser.username}, async (err, user) => {
+				if (err || user) {
+					if (err) error = err;
+					if (user) error = 'This username is already taken';
+					return resolve({error: error});
+				}
+				// create new user
+				new User(newUser).save((error, user) => {
+					resolve({error, user});
+				});
+			});
 		});
 	},
 	findOne: async function(username) {
 		return new Promise((resolve) => 
-			User.findOne({username: username}, (err, user) => {
-				resolve({error: err, user: user});
+			User.findOne({username}, (error, user) => {
+				resolve({error, user});
 		}));
 	}
 }

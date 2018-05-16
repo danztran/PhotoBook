@@ -41,7 +41,7 @@ router.post('/signup', async (req, res, next) => {
 });
 
 router.get('/signout', (req, res) => {
-	req.flash('status', 'You have logged out');
+	req.flash('status', 'You have signed out');
 	req.logout();
 	res.redirect('/');
 });
@@ -52,7 +52,8 @@ router.post('/findUser', async (req, res) => {
 	if (result.user) {
 		result.found = true;
 	}
-	result.user = null;
+	result.username = username;
+	delete result.user;
 	res.send(result);
 });
 
