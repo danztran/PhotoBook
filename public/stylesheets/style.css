@@ -10,3 +10,7 @@ a {
 #btn-go span {
 	color: #00ADB5 !important;
 }
+
+.hide {
+	visibility: hidden;
+}

@@ -1,53 +1,54 @@
-doctype html
-html
-	head
-		title= title
-		meta(name="viewport" content="width=device-width, initial-scale=1")
-		link(rel="stylesheet" href="/stylesheets/group-style.css")
-	body
-		.row
-			.col-12
-				h1.logo PhotoBook 
-					i#add-load.fa.fa-sync-alt.fa-spin.hide.float-right
-				p!= messages()
-		.row#all-cards
-			.col-6
-				.card
-					.card-body
-						h4.card-title Group List (
-							span#groupCount #{groups.length}
-							| )
-							button#btn-add-group.btn.float-right.btn-add
-								i.fa.fa-plus
-						input.form-control#search-group(type="search" placeholder="Type to search...")
-						#all-groups-names
-							if groups
-								each group in groups.reverse()
-									h5.group-name(data-code=group.code)
-										hr
-										i.far.fa-dot-circle.hide.chosen-name
-										span.name  #{group.name}
-										i.fa.fa-angle-right.arrow-right.float-right
-			if groups
-				each group in groups
-					include piece-views/group.pug
+extends layout
 
-			#add-group-card.col-6.group-card
-				.card
-					.card-body
-						h4.card-title
-							| Create new group
-						form#add-group-form
-							.form-group
-								label Group Name*:
-								input.form-control(type="text" name="groupName")
-							.form-group
-								label Group Code*:
-								input.form-control(type="text" name="groupCode")
-								i Group code includes letters, numbers only
-							button#add-group-btn.btn.btn-primary.float-right(type="submit")
-								|  CREATE 
-		script(src="https://code.jquery.com/jquery-3.3.1.min.js")
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js")
-		script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js")
-		script(src="/javascripts/group-script.js")
+block style
+	meta(name="viewport" content="width=device-width, initial-scale=1")
+	link(rel="stylesheet" href="/stylesheets/group-style.css")
+
+block content
+	.row
+		.col-12
+			i#add-load.fa.fa-sync-alt.fa-spin.hide.float-right
+			p!= messages()
+	.row#all-cards
+		.col-6
+			.card
+				.card-body
+					h4.card-title Groups (
+						span#groupCount #{groups.length}
+						| )
+						button#btn-add-group.btn.float-right.btn-add
+							i.fa.fa-plus
+					input.form-control#search-group(type="search" placeholder="Type to search...")
+					#all-groups-names
+						if groups
+							each group in groups.reverse()
+								h5.group-name(data-code=group.code)
+									hr
+									span.name  
+										i.far.fa-dot-circle.hide.chosen-name
+										|  #{group.name}
+									i.fa.fa-angle-right.arrow-right.float-right
+		if groups
+			each group in groups
+				include piece-views/group.pug
+
+		#add-group-card.col-6.group-card
+			.card
+				.card-body
+					h4.card-title
+						| Create new group
+					form#add-group-form
+						.form-group
+							label Group Name*:
+							input.form-control(type="text" name="groupName")
+						.form-group
+							label Group Code*:
+							input.form-control(type="text" name="groupCode")
+							i Group code includes letters, numbers only
+						button#add-group-btn.btn.btn-primary.float-right(type="submit")
+							|  CREATE 
+block script							
+	script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+	script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js")
+	script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js")
+	script(src="/javascripts/group-script.js")

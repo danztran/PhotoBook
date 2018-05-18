@@ -1,2 +1,58 @@
 extends layout
+
+block style
+	link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css")
+	link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css")
+	link(href="https://fonts.googleapis.com/css?family=Proza+Libre" rel="stylesheet")
+	link(rel="stylesheet" href="/stylesheets/photo.css")
+
 block content
+	#drop-area
+		form#up_photo_form.upload-form(action=`/groups/${group.code}/upload` method="POST")
+			| Title: 
+			br
+			input.image_infor(type="text" name="title")
+			br
+			| Date: 
+			br
+			input.image_infor(type="text" name="date")
+			br
+			| Description: 
+			br
+			textarea(name="description" id="" cols="30" rows="10" style="width: 300px; height: 22px;")
+			input#fileElem(type="file" accept="image/*" onchange="handleFiles(this.files)")
+			label#select-image.button(for="fileElem") Select Image
+			progress#progress-bar(style="display: none" max="100" value="0")
+			div
+				p#drop-image-here.animated.infinite.pulse(style="text-align: center; font-size: 28px;") Drop image here
+			#gallery
+		input#up_photo_btn.hideButton(type="submit" value="Upload" style="margin: 20px 50px;")
+		input#crop_resize.hideButton(type="button" value="Crop & resize")
+	// end chọn upload ảnh
+	ul#photo-timeline.fs-timeline
+		if group.photos 
+			if dates.allDates
+				each date, i in dates.allDates
+					// Cho vòng lập ở đây
+					li.fs-timeline-item
+						.fs-timeline-item-line
+						.fs-timeline-item-bullet
+						p.fs-timeline-item-date
+							| #{date.toLocaleDateString()}
+							br
+						p.fs-timeline-item-description 
+							br
+							each photo in dates.allPhotosOnSameDay[i]
+								img(src=photo.source style="height: 150px")
+			// Kết thúc vòng lập
+		
+	// The Modal show picture
+	#myModal.modal
+		// The Close Button
+		span.close ×
+		// Modal Content (The Image)
+		img#img01.modal-content
+
+block script
+	script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js")
+	script(src="/javascripts/photo.js")

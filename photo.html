@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Photo Timeline</title>
+  <link rel="stylesheet" href="css/photo.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Proza+Libre" rel="stylesheet"> 
+</head>
+
+<body>
+
+  <div class="fs-timeline-header">
+    <div class="fs-timeline-header-card">
+        <img src="img/logo.png" id="logo_photobook">
+        <div class="dropdown">
+          <a href="" class="btn_header" >Groups</a>
+              <div class="dropdown-content">
+                <a href="#">Group 1</a>
+                <a href="#">Group 2</a>
+                <a href="#">Group 3</a>
+              </div>
+          <a href="" class="btn_header" >Log out</a>
+        </div>
+    </div>
+  </div>
+
+  <div id="drop-area">
+    <form id="up_photo_form" class="upload-form" action="/groups/<group_code>/upload" method="POST">
+      Tittle: <br>
+      <input class ="image_infor" type="text" name="title">
+      <br>
+      Date: <br>
+      <input class ="image_infor" type="text" name="date">
+      <br>
+      Description: <br>
+      <textarea name="description" id="" cols="30" rows="10" style="width: 300px; height: 22px;"></textarea>
+      <input type="file" id="fileElem" accept="image/*" onchange="handleFiles(this.files)">
+      <label class="button" id="select-image" for="fileElem">Select Image</label>
+
+      <progress id="progress-bar" style="display: none" max=100 value=0></progress>
+      <div><p class="animated infinite pulse" id="drop-image-here" style="text-align: center; font-size: 28px;">Drop image here</p></div>
+      <div id="gallery"/></div>
+    </form>   
+    <input type="submit" class="hideButton" id="up_photo_btn" value="Upload" style="margin: 20px 50px;">
+    <input type="button" class="hideButton" id="crop_resize" value="Crop & resize">
+  </div>
+  <!-- end chọn upload ảnh -->
+
+  <ul class="fs-timeline" id="photo-timeline">
+
+    <!-- Cho vòng lập ở đây -->
+    <li class="fs-timeline-item">
+      <div class="fs-timeline-item-line"></div>
+      <div class="fs-timeline-item-bullet"></div>
+      <p class="fs-timeline-item-date">FEB 2017<br>
+      </p>
+      <p class="fs-timeline-item-description"><span class="fs-timeline-tag">Party WE LOVE 12A3</span><br>Hung have a party with <a href="#">Mary Malinda Hall</a> and <a href="#">John Zera Alger</a>.<br>
+        <img id="myImg" src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/22008199_1981585005454491_4141024704084637856_n.jpg?_nc_cat=0&oh=d964d77c899ca93ec874359c7da9af68&oe=5B7E157C" style="height: 150px">
+        <img id="myImg1" src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/22008199_1981585005454491_4141024704084637856_n.jpg?_nc_cat=0&oh=d964d77c899ca93ec874359c7da9af68&oe=5B7E157C" style="height: 150px">
+        <img id="myImg2" src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/22008199_1981585005454491_4141024704084637856_n.jpg?_nc_cat=0&oh=d964d77c899ca93ec874359c7da9af68&oe=5B7E157C" style="height: 150px">
+        
+      </p>
+
+    </li>
+    <!-- Kết thúc vòng lập -->
+  
+  <!--Start code show Mẫu -->
+    <li class="fs-timeline-item">
+      <div class="fs-timeline-item-line"></div>
+      <div class="fs-timeline-item-bullet"></div>
+      <p class="fs-timeline-item-date">FEB 2017<br>
+      </p>
+      <p class="fs-timeline-item-description"><span class="fs-timeline-tag" >Party WE LOVE 12A3</span><br>Hung have a party with <a href="#">Mary Malinda Hall</a> and <a href="#">John Zera Alger</a>.<br>
+        <img src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/22008199_1981585005454491_4141024704084637856_n.jpg?_nc_cat=0&oh=d964d77c899ca93ec874359c7da9af68&oe=5B7E157C" style="height: 100px">
+
+      </p>
+    </li>
+
+    <li class="fs-timeline-item">
+      <div class="fs-timeline-item-line"></div>
+      <div class="fs-timeline-item-bullet"></div>
+      <p class="fs-timeline-item-date">FEB 2017<br>
+      </p>
+      <p class="fs-timeline-item-description"><span class="fs-timeline-tag" >Party WE LOVE 12A3</span><br>Hung have a party with <a href="#">Mary Malinda Hall</a> and <a href="#">John Zera Alger</a>.<br>
+        <img src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/22008199_1981585005454491_4141024704084637856_n.jpg?_nc_cat=0&oh=d964d77c899ca93ec874359c7da9af68&oe=5B7E157C" style="height: 100px">
+      </p>
+    </li>
+
+    <li class="fs-timeline-item">
+      <div class="fs-timeline-item-line"></div>
+      <div class="fs-timeline-item-bullet"></div>
+      <p class="fs-timeline-item-date">FEB 2017<br>
+      </p>
+      <p class="fs-timeline-item-description"><span class="fs-timeline-tag" >Party WE LOVE 12A3</span><br>Hung have a party with <a href="#">Mary Malinda Hall</a> and <a href="#">John Zera Alger</a>.<br>
+        <img src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/22008199_1981585005454491_4141024704084637856_n.jpg?_nc_cat=0&oh=d964d77c899ca93ec874359c7da9af68&oe=5B7E157C" style="height: 100px">
+      </p>
+    </li>
+
+    <li class="fs-timeline-item">
+      <div class="fs-timeline-item-line"></div>
+      <div class="fs-timeline-item-bullet"></div>
+      <p class="fs-timeline-item-date">FEB 2017<br>
+      </p>
+      <p class="fs-timeline-item-description"><span class="fs-timeline-tag" >Party WE LOVE 12A3</span><br>Hung have a party with <a href="#">Mary Malinda Hall</a> and <a href="#">John Zera Alger</a>.<br>
+        <img src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/22008199_1981585005454491_4141024704084637856_n.jpg?_nc_cat=0&oh=d964d77c899ca93ec874359c7da9af68&oe=5B7E157C" style="height: 100px">
+      </p>
+    </li>
+
+    <li class="fs-timeline-item">
+      <div class="fs-timeline-item-line"></div>
+      <div class="fs-timeline-item-bullet"></div>
+      <p class="fs-timeline-item-date">FEB 2017<br>
+      </p>
+      <p class="fs-timeline-item-description"><span class="fs-timeline-tag" >Party WE LOVE 12A3</span><br>Hung have a party with <a href="#">Mary Malinda Hall</a> and <a href="#">John Zera Alger</a>.<br>
+        <img src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/22008199_1981585005454491_4141024704084637856_n.jpg?_nc_cat=0&oh=d964d77c899ca93ec874359c7da9af68&oe=5B7E157C" style="height: 100px">
+      </p>
+    </li>
+  <!-- END code show mẫu -->
+
+  </ul>
+
+    <!-- The Modal show picture -->
+    <div id="myModal" class="modal">
+      <!-- The Close Button -->
+      <span class="close">&times;</span>
+      <!-- Modal Content (The Image) -->
+      <img class="modal-content" id="img01">
+    </div>
+
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script  src="js/photo.js"></script>
+</body>
+</html>

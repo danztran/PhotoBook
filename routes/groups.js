@@ -47,12 +47,38 @@ router.post('/addMember', async (req, res) => {
 router.get('/:groupCode', async (req, res) => {
 	if (!req.user) return res.redirect('../');
 	let groupCode = req.params.groupCode;
-	let query = groupManager.findAllOf(groupCode);
+	let query = await groupManager.findOne(groupCode);
 	if (query.error) req.flash('groupQuery', query.error);
+	if (query.group) 
+		if (!query.group.members.some(val => val._id.toString() == req.user._id.toString()))
+			return res.redirect('../signout');
+
+	// sort ngày
+	let photos = query.group.photos.slice().sort((a, b) => - new Date(a.date) + new Date(b.date));
+	let allDates = [];
+	let allPhotosOnSameDay = [];
+
+	// lấy toàn bộ ngày
+	for (let i = 0; i < photos.length; i++) {
+		let dateStr = photos[i].date.toLocaleDateString();
+		if (!allDates.includes(dateStr))
+			allDates.push(dateStr);
+	}
+
+	// query ảnh theo ngày
+	for (let i = 0; i < allDates.length; i++) { // chạy từng ngày
+		for (let b = 0; b < photos.length; b++) { // chạy từng ảnh
+			let dateStr = photos[i].date.toLocaleDateString();
+			if (dateStr[b] == allDates[i]) {
+				allPhotosOnSameDay[i].push(dateStr[b]);
+			}
+		}
+	}
 
 	res.render('photos', {
 		title: groupCode + ' | Photos' +  ' | PhotoBook',
 		group: query.group,
+		dates: {allDates, allPhotosOnSameDay},
 		user: req.user
 	});
 });
