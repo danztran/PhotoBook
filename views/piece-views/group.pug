@@ -1,0 +1,39 @@
+if group
+	.col-6.group-card(data-code=group.code style="display: none")
+		.card
+			.card-body
+				h4.card-title
+					| #{group.name}
+				a(href=`/groups/${group.code}`)
+					h4.fa.fa-images  View Album
+				hr
+				.detail-content
+					.group-code
+						label Code:
+						h5.float-right= group.code
+					.date-created
+						label Date Created:
+						h5.float-right= group.date.toLocaleString()
+					hr
+					.photos
+						label Photos Count:
+						h5.float-right= group.photos.length
+					.photos
+						label Newest Photo:
+						if group.photos[0]
+							h4.float-right= group.photos[group.photos.length-1].title
+						else 
+							h5.float-right
+					hr
+					.group-members
+						form.add-member-form.form-inline.float-right.input-group-sm
+							input.form-control(type="hidden" name="groupCode" value=group.code)
+							input.form-control(type="search" placeholder="Enter new username..." name="username")
+						h5.member-list.collapsed(data-toggle="collapse" href=`#collapse-member-${group.code}` aria-controls="member-list")
+							i.fa.fa-caret-right.collapse-btn 
+							span  Members (
+								span(id='memberCount' + group.code) #{group.members.length}
+								| )
+						.members-usernames.collapse(id=`collapse-member-${group.code}`)
+							each member in group.members
+								h5= member.username

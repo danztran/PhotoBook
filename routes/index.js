@@ -24,6 +24,7 @@ router.post('/signin',
 );
 
 router.post('/signup', async (req, res, next) => {
+	if (!req.user) return res.redirect(groupsPage);
 	let newUser = {
 		username: req.body.username,
 		password: req.body.password
@@ -40,12 +41,6 @@ router.post('/signup', async (req, res, next) => {
 	}
 });
 
-router.get('/signout', (req, res) => {
-	req.flash('status', 'You have signed out');
-	req.logout();
-	res.redirect('/');
-});
-
 router.post('/findUser', async (req, res) => {
 	let username = req.body.username;
 	let result = await userManager.findOne(username);
@@ -55,6 +50,12 @@ router.post('/findUser', async (req, res) => {
 	result.username = username;
 	delete result.user;
 	res.send(result);
+});
+
+router.get('/signout', (req, res) => {
+	req.flash('status', 'You have signed out');
+	req.logout();
+	res.redirect('/');
 });
 
 module.exports = router;

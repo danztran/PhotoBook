@@ -1,13 +1,24 @@
 const mongoose 		= require('mongoose');
 
 mongoose.Promise 	= global.Promise;
+Schema 				= mongoose.Schema;
 var GroupSchema 	= new mongoose.Schema({
-	name	: String,
-	code	: {
-		type	: String,
-		index	: {unique: true}
-	},
-	date	: Date
+	code		: {type	: String, index	: {unique: true}},
+	name		: String,
+	date		: Date,
+	members		: [{
+		type 	: Schema.Types.ObjectId,
+		ref 	: 'User'
+	}],
+	photos 		: [{
+		author	: {
+			type: Schema.Types.ObjectId,
+			ref : 'User'
+		},
+		title	: String,
+		source	: String,
+		date 	: Date
+	}]
 });
 
 module.exports 	= mongoose.model('Group', GroupSchema);
