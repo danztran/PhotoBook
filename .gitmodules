@@ -1,0 +1,3 @@
+[submodule "PhotoBook-Demo"]
+	path = PhotoBook-Demo
+	url = https://github.com/callous9855/PhotoBook.git
