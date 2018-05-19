@@ -2,6 +2,8 @@ $(document).ready(()=> {
 	$('#all-groups-names').on('click', '.group-name', function() {
 		let code = $(this).data('code');
 		$('.chosen-name').addClass('hide');
+		$('.chosen-name').parent().find('.spename').removeClass('chosen');
+		$(this).find('.chosen-name').parent().find('.spename').addClass('chosen');
 		$(this).find('.chosen-name').removeClass('hide');
 		$('.group-card').removeClass('show').hide();
 		$('.group-card[data-code=' + code +']').show().addClass('show');
@@ -85,9 +87,9 @@ $(document).ready(()=> {
 		$('span.name').each((i, val) => {
 			let data = $(val).text();
 			if (queryLetter(query, data)) 
-				$(val).parents('.group-name').slideDown();
+				$(val).parents('.each-group').slideDown();
 			else 
-				$(val).parents('.group-name').slideUp();
+				$(val).parents('.each-group').slideUp();
 		});
 	});
 });
@@ -108,5 +110,5 @@ function queryLetter(query, data) {
 }
 
 function clearForm(form) {
-	$(form).find('input:not(.hidden)').val();
+	$(form).find('input:not(.hidden)').val('');
 }

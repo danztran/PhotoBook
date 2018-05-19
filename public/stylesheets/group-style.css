@@ -32,8 +32,37 @@ body {
 }
 
 .group-name {
-    padding-left: 20px;
     cursor: pointer;
+    padding: 10px 20px;
+    margin-bottom: 0;
+    padding-left: 10px;
+}
+
+.group-name:hover {
+    color: #00ADB5;
+}
+
+.group-name:hover span.spename {
+    color: #00ADB5;
+}
+
+#all-groups-names hr {
+    margin: 0px;
+}
+
+span.spename {
+    transition: .3s;
+    padding-left: 10px;
+}
+
+.chosen-name {
+    color: #00ADB5;
+}
+
+span.spename.chosen {
+    color: #00ADB5;
+    padding-left: 20px;
+    font-size: 22px;
 }
 
 i.arrow-right {
@@ -46,6 +75,8 @@ i.arrow-right {
     opacity: 1;
     margin-right: 20px;
 }
+
+
 
 .btn-add {
     background-color: transparent;
@@ -91,6 +122,7 @@ label {
 
 .group-members h5:not(.collapsed) i.fa {
     transform: rotate(90deg);
+    padding-left: 10px;
 }
 
 h5.member-list {
@@ -108,4 +140,26 @@ i.collapse-btn {
 
 .member-list {
     cursor: pointer;
+}
+
+input.form-control, button {
+    outline: none;
+    border-color: #00ADB5 !important;
+    margin-bottom: 10px !important;
+    transition: all .3s;
+}
+
+input.form-control:focus {
+    box-shadow: 0 3px 3px 0px #00ADB5;
+}
+
+button:hover {
+    transition: all .3s;
+    transform: translateY(-4px);
+    box-shadow: 0 2px 3px 1px #090909;   
+}
+
+#add-group-btn {
+    transition: all .3s;
+    background-color: #00ADB5;
 }

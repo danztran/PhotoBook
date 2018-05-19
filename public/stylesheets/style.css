@@ -14,3 +14,11 @@ a {
 .hide {
 	visibility: hidden;
 }
+
+.color-primary {
+	color: #00ADB5;
+}
+
+.strong {
+	font-weight: 700;
+}
