@@ -25,8 +25,8 @@ module.exports = {
 					return resolve({error: error});
 				}
 				// create new user
-				new User(newUser).save((error, user) => {
-					resolve({error, user});
+				new User(newUser).save((error, newuser) => {
+					resolve({error, user: newuser});
 				});
 			});
 		});
