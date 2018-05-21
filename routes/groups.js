@@ -54,23 +54,27 @@ router.get('/:groupCode', async (req, res) => {
 			return res.redirect('../signout');
 
 	// sort ngày
-	let photos = query.group.photos.slice().sort((a, b) => - new Date(a.date) + new Date(b.date));
+	let photos = query.group.photos;
+	photos = photos.sort((a, b) => - new Date(a.date).getTime() + new Date(b.date).getTime());
+	console.log(photos);
 	let allDates = [];
 	let allPhotosOnSameDay = [];
 
 	// lấy toàn bộ ngày
 	for (let i = 0; i < photos.length; i++) {
-		let dateStr = photos[i].date.toLocaleDateString();
+		let dateStr = new Date(photos[i].date).toLocaleDateString();
 		if (!allDates.includes(dateStr))
 			allDates.push(dateStr);
 	}
+	console.log(allDates);
 
 	// query ảnh theo ngày
 	for (let i = 0; i < allDates.length; i++) { // chạy từng ngày
+		allPhotosOnSameDay[i] = [];
 		for (let b = 0; b < photos.length; b++) { // chạy từng ảnh
-			let dateStr = photos[i].date.toLocaleDateString();
-			if (dateStr[b] == allDates[i]) {
-				allPhotosOnSameDay[i].push(dateStr[b]);
+			let dateStr = new Date(photos[b].date).toLocaleDateString();
+			if (dateStr == allDates[i]) {
+				allPhotosOnSameDay[i].push(photos[b]);
 			}
 		}
 	}

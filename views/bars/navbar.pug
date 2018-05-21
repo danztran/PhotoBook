@@ -2,13 +2,9 @@
 	.fs-timeline-header-card
 		a(href="/")
 			img#logo_photobook(src="/logo.png")
-			i#add-load.fa.fa-sync-alt.fa-spin.hide.fa-2x.text-light
+			i#add-load.fa.fa-sync-alt.fa-spin.fa-2x.text-light.hide
 		if user
 			if !groups
 				.dropdown
-					a.btn_header(href="#") Groups
-					.dropdown-content
-						a(href="#") Group 1
-						a(href="#") Group 2
-						a(href="#") Group 3
+					a.btn_header(href="/groups") Groups
 			a.btn_header(href="/signout") Sign out

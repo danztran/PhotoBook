@@ -8,26 +8,27 @@ block style
 
 block content
 	#drop-area
-		form#up_photo_form.upload-form(action=`/groups/${group.code}/upload` method="POST")
+		form#up_photo_form.upload-form(action=`/groups/${group.code}/upload` method="POST", data-code=group.code)
 			| Title: 
 			br
 			input.image_infor(type="text" name="title")
 			br
 			| Date: 
 			br
-			input.image_infor(type="text" name="date")
+			input.image_infor(type="date" name="date")
 			br
 			| Description: 
 			br
 			textarea(name="description" id="" cols="30" rows="10" style="width: 300px; height: 22px;")
-			input#fileElem(type="file" accept="image/*" onchange="handleFiles(this.files)")
+			| Image
+			input#fileElem(type="file" accept="image/*" onchange="handleFiles(this.files)" name="image")
 			label#select-image.button(for="fileElem") Select Image
 			progress#progress-bar(style="display: none" max="100" value="0")
 			div
 				p#drop-image-here.animated.infinite.pulse(style="text-align: center; font-size: 28px;") Drop image here
 			#gallery
 		input#up_photo_btn.hideButton(type="submit" value="Upload" style="margin: 20px 50px;")
-		input#crop_resize.hideButton(type="button" value="Crop & resize")
+		input#crop_resize.hide.hideButton(type="button" value="Crop & resize")
 	// end chọn upload ảnh
 	ul#photo-timeline.fs-timeline
 		if group.photos 
@@ -37,13 +38,12 @@ block content
 					li.fs-timeline-item
 						.fs-timeline-item-line
 						.fs-timeline-item-bullet
-						p.fs-timeline-item-date
-							| #{date.toLocaleDateString()}
+						p.fs-timeline-item-date= new Date(date).toLocaleDateString()
 							br
 						p.fs-timeline-item-description 
 							br
 							each photo in dates.allPhotosOnSameDay[i]
-								img(src=photo.source style="height: 150px")
+								img.img-timeline(src=photo.source style="height: 150px")
 			// Kết thúc vòng lập
 	// The Modal show picture
 	#myModal.modal

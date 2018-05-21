@@ -4,6 +4,9 @@ var Group = require('../models/group');
 // db_manager
 var userManager = require('./user-manager');
 
+// config
+var imgur = require('../config/imgur');
+
 function checkGroupname(str) {
 	let validGroupname = /^[0-9a-zA-Z]+$/g;
 	return str.match(validGroupname) ? true : false;
@@ -103,19 +106,21 @@ module.exports = {
 			let groupCode = req.params.groupCode;
 
 			// check if group is exist
-			let query = await groupManager.findOne(groupCode);
+			let query = await this.findOne(groupCode);
 			if ( query.error) return resolve({error: query.error});
 			if (!query.group) return resolve({error: "Group<"+ groupCode +"> not found"});
 			let group = query.group;
 
 			// check if current user is a member of group
-			if (!group.members.some(val => val._id.toString() == userId.toString()))
+			if (!group.members.some(val => val._id.toString() == req.user._id.toString()))
 				return resolve({error: "You are not a member of this group<"+ groupCode +">"});
 
 			// ELSE push photo
 			// get info
 			let image = req.files.image;
-			if (image) imageSrc = await imgur.upload(image.filename); // upload to imgur
+			let imageSrc = '';
+			if (!image) return resolve({error: "image null"});
+			if (image) imageSrc = await imgur.upload(image[0].filename); // upload to imgur
 			let date = req.body.date ? new Date(req.body.date) : Date.now();
 			let photo = {
 				author: req.user._id,
@@ -124,7 +129,7 @@ module.exports = {
 				date: date
 			}
 			// push photo and save
-			groupManager.findByIdAndUpdate(
+			Group.findByIdAndUpdate(
 				group._id,
 				{ $push: { photos: photo } },
 				(error) => resolve({error, photo})

@@ -29,13 +29,18 @@
   var modal = document.getElementById('myModal');
 
   // Get the image and insert it inside the modal - use its "alt" text as a caption
-  var img = document.getElementById('myImg');
-  var modalImg = document.getElementById("img01");
-  img.onclick = function(){
-      document.getElementById("photo-timeline").style.display = 'none';
-      modal.style.display = "block";
-      modalImg.src = this.src;
-  }
+  // var img = document.getElementById('myImg');
+  // var modalImg = document.getElementById("img01");
+  // img.onclick = function(){
+  //     document.getElementById("photo-timeline").style.display = 'none';
+  //     modal.style.display = "block";
+  //     modalImg.src = this.src;
+  // }
+  $('.img-timeline').click( function () {
+    $('#photo-timeline').hide();
+    $('#myModal').css('display', 'block');
+    $('#img01').attr('src', $(this).attr('src'));
+  });
 
   // Get the <span> element that closes the modal
   var span = document.getElementsByClassName("close")[0];
@@ -108,10 +113,10 @@ function updateProgress(fileNumber, percent) {
 }
 
 function handleFiles(files) {
-  files = [...files]
-  initializeProgress(files.length)
-  files.forEach(uploadFile)
-  files.forEach(previewFile)
+  files = [...files];
+  initializeProgress(files.length);
+  // files.forEach(uploadFile);
+  files.forEach(previewFile);
 }
 
 // preview image
@@ -133,66 +138,17 @@ function previewFile(file) {
   }
 }
 
-// upload image
-function uploadFile(file, i) {
-  var url = 'https://api.cloudinary.com/v1_1/joezim007/image/upload'
-  var xhr = new XMLHttpRequest()
-  var formData = new FormData()
-  xhr.open('POST', url, true)
-  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
-
-  // Update progress (can be used to show progress indicator)
-  xhr.upload.addEventListener("progress", function(e) {
-    updateProgress(i, (e.loaded * 100.0 / e.total) || 100)
-  })
-
-  xhr.addEventListener('readystatechange', function(e) {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      updateProgress(i, 100) // <- Add this
-    }
-    else if (xhr.readyState == 4 && xhr.status != 200) {
-      // Error. Inform the user
-    }
-  })
-
-  formData.append('upload_preset', 'ujpu6gyk')
-  formData.append('file', file)
-  xhr.send(formData)
-}
-// end drag and drop image
-
-// start add group photo
-function addGroupPhoto(photo){
-  var row = '';
-
-  row+='<li class="fs-timeline-item">';
-  row+='  <div class="fs-timeline-item-line"></div>';
-  row+='  <div class="fs-timeline-item-bullet"></div>';
-  // date
-  row+='  <p class="fs-timeline-item-date">'+photo.date+'<br></p>';
-  // title
-  row+='  <p class="fs-timeline-item-description"><span class="fs-timeline-tag">'+photo.title+'</span>';
-  // author
-  row+='    <br>'+photo.author+' have a party with <a href="#">Mary Malinda Hall</a> and <a href="#">John Zera Alger</a>.<br>';
-  // image
-  row+='    <img id="myImg" src="'+photo.source+'" style="height: 150px">';
-  row+='  </p>';
-  row+='</li>';
-
-  $('#photo-timeline').prepend(row);
-};
-// end add new group photo
-
 // start document
 $(document).ready(function(){
-
+  var groupCode = $('#up_photo_form').data('code');
   //4.1 start upload photo story
   $('#up_photo_btn').click(function (e){
+    $('#add-load').removeClass('hide');
     e.preventDefault();
     var form = document.querySelector('#up_photo_form');
 
     $.ajax({
-      url: '/groups/<group_code>/upload',
+      url: `/groups/${groupCode}/upload`,
       method: 'POST',
       dataType: 'json',
       data: new FormData(form),
@@ -200,6 +156,7 @@ $(document).ready(function(){
       contentType: false,
 
     }).done(function (data){
+      $('#add-load').addClass('hide');
       form.reset();
 
       if (data.error) {
@@ -207,10 +164,10 @@ $(document).ready(function(){
         alert('Add fail');
       }
       else {
-        addGroupPhoto(data.photo);
+        // addGroupPhoto(data.photo);
         alert("Add successfully");
       }
-
+      window.location.reload();
     }).fail(function (data) {
       console.log(data.error); 
     });

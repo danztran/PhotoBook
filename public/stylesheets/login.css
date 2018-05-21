@@ -395,3 +395,8 @@ body {
   color: red;
 }
 
+#add-load {
+  top: 20px;
+  right: 150px;
+  position: absolute;
+}

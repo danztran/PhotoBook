@@ -15,4 +15,4 @@ function upload(imgname) {
 	)
 }
 
-module.exports = upload;
+module.exports.upload = upload;

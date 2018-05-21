@@ -24,12 +24,14 @@ router.post('/signin',
 );
 
 router.post('/signup', async (req, res, next) => {
-	if (!req.user) return res.redirect(groupsPage);
+	if (req.user) return res.redirect(groupsPage);
 	let newUser = {
 		username: req.body.username,
 		password: req.body.password
 	};
 	let result = await userManager.signUp(newUser);
+	console.log(newUser);
+	console.log(result);
 	if (result.error) {
 		req.flash('signupMsg', result.error);
 		res.redirect('/');

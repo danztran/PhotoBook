@@ -12,7 +12,7 @@ img.storage = multer.diskStorage({
 		});		
 	},
 	filename: function(req, file, callback) {
-		let name = Date.now() + '_' + req.body.code + '_' + file.originalname;
+		let name = Date.now() + '_' + file.originalname;
 		callback(null, name);
 	}
 });

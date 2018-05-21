@@ -22,3 +22,7 @@ a {
 .strong {
 	font-weight: 700;
 }
+
+#add-load {
+	color: white;
+}
