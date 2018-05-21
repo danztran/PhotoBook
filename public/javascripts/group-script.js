@@ -2,7 +2,7 @@ $(document).ready(()=> {
 	$('#all-groups-names').on('click', '.group-name', function() {
 		let code = $(this).data('code');
 		$('.chosen-name').addClass('hide');
-		$('.chosen-name').parent().find('.spename').removeClass('chosen');
+		$('.spename').removeClass('chosen');
 		$(this).find('.chosen-name').parent().find('.spename').addClass('chosen');
 		$(this).find('.chosen-name').removeClass('hide');
 		$('.group-card').removeClass('show').hide();
@@ -12,6 +12,8 @@ $(document).ready(()=> {
 	$('#btn-add-group').click( function() {
 		$('.group-card').removeClass('show').hide();
 		$('#add-group-card').show().addClass('show');
+		$('.chosen-name').addClass('hide');
+		$('.spename').removeClass('chosen');
 	});
 
 	$('#add-group-form').submit(function(e) {
@@ -33,10 +35,14 @@ $(document).ready(()=> {
 			}
 			$('#all-cards').append(data.render);
 			// append group name
-			let renderName = `<h5 class="group-name" data-code="${data.group.code}">`;
-			renderName += `<hr><i class="far fa-dot-circle hide chosen-name"> </i>`;
-			renderName += `<span class="name"> ${data.group.name} </span>`;
-			renderName += `<i class="fa fa-angle-right arrow-right float-right"></i></h5>`;
+			let renderName = `<hr>`;
+			renderName += `<h5 class="group-name" data-code="${data.group.code}">`;
+			renderName += 	`<span class="name">`;
+			renderName += 		`<i class="far fa-dot-circle hide chosen-name"> </i>`;
+			renderName += 		`<span class="spename"> ${data.group.name} </span>`;
+			renderName += 	`</span>`;
+			renderName += 	`<i class="fa fa-angle-right arrow-right float-right"></i>`;
+			renderName += `</h5>`;
 			$(renderName).prependTo('#all-groups-names').hide().slideDown();
 			// clearForm
 			clearForm($(this));
@@ -86,7 +92,7 @@ $(document).ready(()=> {
 		let query = ' ' + $(this).val();
 		$('span.name').each((i, val) => {
 			let data = $(val).text();
-			if (queryLetter(query, data)) 
+			if (queryLetter(query.toLowerCase(), data.toLowerCase())) 
 				$(val).parents('.each-group').slideDown();
 			else 
 				$(val).parents('.each-group').slideUp();

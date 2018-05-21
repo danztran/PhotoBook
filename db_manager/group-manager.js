@@ -52,7 +52,8 @@ module.exports = {
 	findOne: function(groupCode) {
 		return new Promise((resolve) => {
 			Group.findOne({code: groupCode})
-			.populate('members').populate('photos')
+			.populate('members')
+			.populate({ path: 'photos.author', select: 'username' })
 			.exec()
 			.then((group, error) => {
 				resolve({group, error});
@@ -126,6 +127,7 @@ module.exports = {
 				author: req.user._id,
 				title: req.body.title,
 				source: imageSrc,
+				caption: req.body.caption,
 				date: date
 			}
 			// push photo and save

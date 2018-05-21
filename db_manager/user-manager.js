@@ -1,9 +1,9 @@
 // model
 const User = require('../models/user');
 
-function checkUsername(str) {
-	let validUsername = /^[0-9a-zA-Z]+$/g;
- 	return str.match(validUsername) ? true : false;
+function checkValid(str) {
+	let valid = /^[0-9a-zA-Z]+$/g;
+ 	return str.match(valid) ? true : false;
 }
 
 module.exports = {
@@ -11,12 +11,17 @@ module.exports = {
 		return new Promise((resolve) => {
 			let error = '';
 			// check valid
-			if (!checkUsername(newUser.username)) {
+			if (!checkValid(newUser.username)) {
 				error = `Invalid username<${ newUser.username }>`;
+				return resolve({error});
+			}
+			if (!checkValid(newUser.password)) {
+				error = `Invalid password`;
 				return resolve({error});
 			}
 			// format username
 			newUser.username = newUser.username.toLowerCase().replace(/\s+/g, '');
+			newUser.password = newUser.password.toLowerCase().replace(/\s+/g, '');
 			// check username in database
 			User.findOne({username: newUser.username}, (err, user) => {
 				if (err || user) {
@@ -29,6 +34,29 @@ module.exports = {
 					resolve({error, user: newuser});
 				});
 			});
+		});
+	},
+	checkUser: function(newUser) {
+		return new Promise(async (resolve) => {
+			// check valid
+			if (!checkValid(newUser.username)) {
+				let error = `Invalid username<${ newUser.username }>`;
+				return resolve({error});
+			}
+			if (!checkValid(newUser.password)) {
+				let error = `Invalid password`;
+				return resolve({error});
+			}
+			// format username
+			newUser.username = newUser.username.toLowerCase().replace(/\s+/g, '');
+			newUser.password = newUser.password.toLowerCase().replace(/\s+/g, '');
+			// check username in database
+			let query = this.findOne(newUser.username);
+			if (query.error) return resolve({error: query.error});
+			if (query.user) return resolve({error: `This username <${ newUser.username }> is already taken`});
+
+			resolve({status: true});
+
 		});
 	},
 	findOne: async function(username) {

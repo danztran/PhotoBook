@@ -30,8 +30,6 @@ router.post('/signup', async (req, res, next) => {
 		password: req.body.password
 	};
 	let result = await userManager.signUp(newUser);
-	console.log(newUser);
-	console.log(result);
 	if (result.error) {
 		req.flash('signupMsg', result.error);
 		res.redirect('/');
@@ -41,6 +39,16 @@ router.post('/signup', async (req, res, next) => {
             res.redirect(groupsPage);
         });
 	}
+});
+
+router.post('/checkUser', async (req, res) => {
+	if (req.user) return res.redirect(groupsPage);
+	let newUser = {
+		username: req.body.username,
+		password: req.body.password
+	};
+	let result = await userManager.checkUser(newUser);
+	res.send(result);
 });
 
 router.post('/findUser', async (req, res) => {

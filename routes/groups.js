@@ -56,7 +56,6 @@ router.get('/:groupCode', async (req, res) => {
 	// sort ngày
 	let photos = query.group.photos;
 	photos = photos.sort((a, b) => - new Date(a.date).getTime() + new Date(b.date).getTime());
-	console.log(photos);
 	let allDates = [];
 	let allPhotosOnSameDay = [];
 
@@ -66,7 +65,6 @@ router.get('/:groupCode', async (req, res) => {
 		if (!allDates.includes(dateStr))
 			allDates.push(dateStr);
 	}
-	console.log(allDates);
 
 	// query ảnh theo ngày
 	for (let i = 0; i < allDates.length; i++) { // chạy từng ngày

@@ -21,7 +21,26 @@
   window.addEventListener('resize', updateTimelineItems);
   window.addEventListener('scroll', updateTimelineItems);
   updateTimelineItems(null, true);
+
+  $('#dateUpload').val(new Date().toISOString().substr(0, 10));
 })();
+
+$('#imgUpload').change(function() {
+    loadImage(this);
+});
+
+function loadImage(input){
+  $(input).parent().find("img.img-preview").fadeOut('fast');
+  if (input.files && input.files[0]) {
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      setTimeout(()=>$(input).parent().find("img.img-preview").attr("src", e.target.result).fadeIn(), 200);
+    }
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    $(input).parent().find("img.img-preview").removeAttr("src").slideUp();
+  }
+}
 
 
 // Start zoom picture
@@ -29,24 +48,21 @@
   var modal = document.getElementById('myModal');
 
   // Get the image and insert it inside the modal - use its "alt" text as a caption
-  // var img = document.getElementById('myImg');
-  // var modalImg = document.getElementById("img01");
-  // img.onclick = function(){
-  //     document.getElementById("photo-timeline").style.display = 'none';
-  //     modal.style.display = "block";
-  //     modalImg.src = this.src;
-  // }
   $('.img-timeline').click( function () {
     $('#photo-timeline').hide();
     $('#myModal').css('display', 'block');
     $('#img01').attr('src', $(this).attr('src'));
+    $('#modal-title').text($(this).data('title'));
+    $('#modal-date').text($(this).data('date'));
+    $('#modal-caption').text($(this).data('caption'));
+    $('#modal-author').text($(this).data('author'));
   });
 
   // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
+  var modal = document.getElementById('myModal');
 
   // When the user clicks on <span> (x), close the modal
-  span.onclick = function() { 
+  modal.onclick = function() { 
     modal.style.display = "none";
     document.getElementById("photo-timeline").style.display = ""; 
   }

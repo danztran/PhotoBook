@@ -21,22 +21,45 @@ $('#su_repassword').on('keyup', function(e){
   }
 });
 
-$('form').submit( (e) => {
-	console.log('bablabla')
+$('form').submit( () => {
   $('#add-load').removeClass('hide');
 });
 
 // sign up submit
+let valid = false;
 $('#su_form').submit(function(e){
-  var password = $('#su_password').val();
-  var repassword = $('#su_repassword').val();
+  if (!valid) {
+   e.preventDefault();
+   var username = $('#su_username').val();
+   var password = $('#su_password').val();
+   var repassword = $('#su_repassword').val();
+   if (password !== repassword) { 
+      e.preventDefault();
+      alert('Passwords do not match');
+      $('#add-load').addClass('hide');
+      valid = false;
+      return;
+    }
+    $.ajax({
+      url: '/checkUser',
+      type: 'post',
+      data: {username, password}
+    }).done(data => {
+      $('#add-load').addClass('hide');
+      if (data.error) {
+        alert(data.error);
+        valid = false;
+      } else {
+        valid = true;
+        $('#su_form').submit();
+      }
 
-  if (password === repassword) {
-    // if matches then form will submit
-    return;
+    }).fail( (jqXHR, statusText, errorThrown) => {
+      alert('Some thing wrong !');
+      console.log('Fail:' + jqXHR.responseText);
+      console.log(statusText);
+    });
   }
-
-  e.preventDefault();
 });
 
 // prevent special characters
@@ -44,7 +67,4 @@ $('input').attr('pattern', '[a-zA-Z0-9]{6,}');
 $('input').attr('title', 'Cannot contain special characters and must be at least 6 characters');
 
 // start document
-$(document).ready(function(){
-
-});
 // end document
