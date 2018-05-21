@@ -64,5 +64,14 @@ module.exports = {
 			User.findOne({username}, (error, user) => {
 				resolve({error, user});
 		}));
+	},
+	findAll: async function(property) {
+		return new Promise(resolve => {
+			User.find().select(property)
+			.exec()
+			.then((data, error) => {
+				resolve({error, data});
+			});
+		});
 	}
 }

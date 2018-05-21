@@ -1,4 +1,18 @@
 $(document).ready(()=> {
+	let auns = [];
+	$.ajax({
+		url: '/auns',
+		type: 'get'
+	}).done(data => {
+		if (data.error)
+			return console.log(error);
+		if (data.data)
+			auns = data.data;
+		$('.in_username').autocomplete({source: auns});
+		console.log(data.data)
+	});
+	
+	// select group and show group info
 	$('#all-groups-names').on('click', '.group-name', function() {
 		let code = $(this).data('code');
 		$('.chosen-name').addClass('hide');
@@ -9,6 +23,7 @@ $(document).ready(()=> {
 		$('.group-card[data-code=' + code +']').show().addClass('show');
 	});
 
+	// show add group board
 	$('#btn-add-group').click( function() {
 		$('.group-card').removeClass('show').hide();
 		$('#add-group-card').show().addClass('show');
@@ -16,6 +31,7 @@ $(document).ready(()=> {
 		$('.spename').removeClass('chosen');
 	});
 
+	// when submit adding new group
 	$('#add-group-form').submit(function(e) {
 		e.preventDefault();
 		$('#add-load').removeClass('hide');
@@ -52,7 +68,8 @@ $(document).ready(()=> {
 			$(`.group-name[data-code="${data.group.code}"]`).click();
 			// clear search action
 			$('#search-group').val('');
-			$('#search-group').trigger('keyup')
+			$('#search-group').trigger('keyup');
+			$('.in_username').autocomplete({source: auns});
 		}).fail( (jqXHR, statusText, errorThrown) => {
 			alert('Some thing wrong !');
 			console.log('Fail:' + jqXHR.responseText);
@@ -60,6 +77,8 @@ $(document).ready(()=> {
 		});
 	});
 
+
+	// add new member
 	$('#all-cards').on('submit', '.add-member-form', function(e) {
 		e.preventDefault();
 		$('#add-load').removeClass('hide');
@@ -88,6 +107,7 @@ $(document).ready(()=> {
 		});
 	});
 
+	// search groups on key up
 	$('#search-group').on('keyup', function() {
 		let query = ' ' + $(this).val();
 		$('span.name').each((i, val) => {
@@ -98,6 +118,11 @@ $(document).ready(()=> {
 				$(val).parents('.each-group').slideUp();
 		});
 	});
+
+	// prevent special characters
+	$('#add-group-card input#groupCode').attr('pattern', '[a-zA-Z0-9]{3,15}');
+	$('#add-group-card input#groupName').attr('pattern', '^.{3,25}$');
+	$('#add-group-card input').attr('title', 'Cannot contain special characters and must be from 3 to 15 characters');
 });
 
 function queryLetter(query, data) {
@@ -119,6 +144,3 @@ function clearForm(form) {
 	$(form).find('input:not(.hidden)').val('');
 }
 
-// prevent special characters
-$('#add-group-card input').attr('pattern', '[a-zA-Z0-9]{6,15}');
-$('#add-group-card input').attr('title', 'Cannot contain special characters and must be from 6 to 15 characters');

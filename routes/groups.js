@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 	res.render('groups', { 
 		title: 'Groups | PhotoBook', 
 		groups: rs.groups,
-		user: req.user
+		user: req.user,
 	});
 });
 

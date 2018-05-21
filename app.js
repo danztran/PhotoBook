@@ -1,7 +1,7 @@
 const createError 			= require('http-errors');
 const express 				  = require('express');
 const mongoose 				  = require('mongoose');
-// const favicon 				  = require('serve-favicon');
+const favicon 				  = require('serve-favicon');
 const session 				  = require('express-session');
 const path 					    = require('path');
 const cookieParser 			= require('cookie-parser');
@@ -26,7 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // using config
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -28,7 +28,7 @@ if group
 					.group-members
 						form.add-member-form.form-inline.float-right.input-group-sm
 							input.form-control(type="hidden" name="groupCode" value=group.code)
-							input.form-control(type="search" placeholder="Enter new username..." name="username")
+							input.form-control.in_username(type="search" placeholder="Enter new username..." name="username")
 						h5.member-list.collapsed(data-toggle="collapse" href=`#collapse-member-${group.code}` aria-controls="member-list").color-primary
 							i.fa.fa-caret-right.collapse-btn 
 							span  Members (

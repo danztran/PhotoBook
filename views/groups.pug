@@ -2,6 +2,7 @@ extends layout
 
 block style
 	meta(name="viewport" content="width=device-width, initial-scale=1")
+	link(rel="stylesheet" href="/opensource/jquery-ui.min.css")
 	link(rel="stylesheet" href="/stylesheets/group-style.css")
 
 block content
@@ -41,16 +42,17 @@ block content
 					form#add-group-form.strong
 						.form-group
 							label Group Name*:
-							input.form-control(type="text" name="groupName" required)
+							input#in_groupName.form-control(type="text" name="groupName" required)
 						.form-group
 							label Group Code*:
-							input.form-control(type="text" name="groupCode" required)
+							input#in_groupCode.form-control(type="text" name="groupCode" required)
 							i
 								small Group code includes letters, numbers only
 						button#add-group-btn.btn.btn-primary.float-right(type="submit")
 							|  CREATE 
 block script							
 	script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+	script(src="/opensource/jquery-ui.min.js")
 	script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js")
 	script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js")
 	script(src="/javascripts/group-script.js")

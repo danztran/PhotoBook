@@ -62,6 +62,15 @@ router.post('/findUser', async (req, res) => {
 	res.send(result);
 });
 
+router.get('/auns', async (req, res) => {
+	if (!req.user) return res.redirect('..');
+	let queryUname = await userManager.findAll('username');
+	if (queryUname.data) 
+		queryUname.data = queryUname.data.map(val => val.username);
+	res.send(queryUname);
+});
+
+
 router.get('/signout', (req, res) => {
 	req.flash('status', 'You have signed out');
 	req.logout();
