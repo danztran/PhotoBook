@@ -34,7 +34,7 @@ block content
 			h1.title
 				| Register
 				.close
-			form(action="/signup" method="POST")
+			form#su_form(action="/signup" method="POST")
 				.input-container
 					input#su_username(type="text" name="username" required="required")
 					label(for="su_username") Username
@@ -47,6 +47,8 @@ block content
 					input#su_repassword(type="password" name="repassword" required="required")
 					label(for="su_repassword") Repeat Password
 					.bar
+				.input-container(hidden)
+					span#message status
 				.button-container
 					button
 						span Next

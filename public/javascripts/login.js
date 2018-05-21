@@ -7,7 +7,7 @@ $('.close').on('click', function() {
 });
 
 // sign up password checking
-$('#su_repassword').on('keyup', function(e){
+$('#su_password, #su_repassword').on('keyup', function(){
   var password = $('#su_password').val();
   var repassword = $('#su_repassword').val();
 
@@ -27,24 +27,17 @@ $('form').submit( (e) => {
 });
 
 // sign up submit
-$('#su_form').submit(function(e){
+$('#su_form').submit(function(e){	
   var password = $('#su_password').val();
   var repassword = $('#su_repassword').val();
 
-  if (password === repassword) {
-    // if matches then form will submit
-    return;
-  }
-
+  if (password === repassword) 
+  	return;
+  // if matches then form will submit
+  // else it will not
   e.preventDefault();
 });
 
 // prevent special characters
 $('input').attr('pattern', '[a-zA-Z0-9]{6,}');
 $('input').attr('title', 'Cannot contain special characters and must be at least 6 characters');
-
-// start document
-$(document).ready(function(){
-
-});
-// end document

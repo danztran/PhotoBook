@@ -112,3 +112,7 @@ function queryLetter(query, data) {
 function clearForm(form) {
 	$(form).find('input:not(.hidden)').val('');
 }
+
+// prevent special characters
+$('#add-group-card input').attr('pattern', '[a-zA-Z0-9]{6,15}');
+$('#add-group-card input').attr('title', 'Cannot contain special characters and must be from 6 to 15 characters');
