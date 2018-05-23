@@ -31,20 +31,24 @@ block content
 					input.col-9#imgUpload.form-control.form-control-sm.text-center(type='file' name='image' required)
 					img.img-preview.text-center
 	// end chọn upload ảnh
-	ul#photo-timeline.fs-timeline
-		if group.photos 
-			if dates.allDates
-				each date, i in dates.allDates
-					// Cho vòng lập ở đây
-					li.fs-timeline-item
-						.fs-timeline-item-line
-						.fs-timeline-item-bullet
-						p.fs-timeline-item-date= new Date(date).toLocaleDateString()
-							br
-						p.fs-timeline-item-description 
-							br
-							each photo in dates.allPhotosOnSameDay[i]
-								img.img-timeline(src=photo.source style="height: 150px" data-title=photo.title data-caption=photo.caption data-date=new Date(photo.date).toLocaleDateString() data-author=photo.author.username)
+	if group.photos 
+		if group.photos.length > 0
+			ul#photo-timeline.fs-timeline
+				if dates.allDates
+					each date, i in dates.allDates
+						// Cho vòng lập ở đây
+						li.fs-timeline-item
+							.fs-timeline-item-line
+							.fs-timeline-item-bullet
+							p.fs-timeline-item-date= new Date(date).toLocaleDateString()
+								br
+							p.fs-timeline-item-description 
+								br
+								each photo in dates.allPhotosOnSameDay[i]
+									img.img-timeline(src=photo.source style="height: 150px" data-title=photo.title data-caption=photo.caption data-date=new Date(photo.date).toLocaleDateString() data-author=photo.author.username)
+		else
+			h1
+			h2.text-center No photo was uploaded
 			// Kết thúc vòng lập
 	// The Modal show picture
 	#myModal.modal

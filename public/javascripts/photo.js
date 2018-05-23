@@ -158,7 +158,7 @@ function previewFile(file) {
 $(document).ready(function(){
   var groupCode = $('#up_photo_form').data('code');
   //4.1 start upload photo story
-  $('#up_photo_btn').click(function (e){
+  $('#up_photo_form').submit(function (e){
     $('#add-load').removeClass('hide');
     e.preventDefault();
     var form = document.querySelector('#up_photo_form');

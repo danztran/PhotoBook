@@ -394,9 +394,14 @@ button:hover {
 }
 
 #img01 {
-    /*width: 400px;*/
+    width: 100%;
+    max-width: 400px;
 }
 
 #up_photo_btn {
     margin-left: 20px;
+}
+
+.img-timeline {
+  margin: 2px;
 }

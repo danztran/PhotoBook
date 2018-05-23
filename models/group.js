@@ -17,6 +17,7 @@ var GroupSchema 	= new mongoose.Schema({
 		},
 		title	: String,
 		source	: String,
+		caption : String,
 		date 	: Date
 	}]
 });
