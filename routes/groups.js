@@ -88,7 +88,6 @@ router.get('/:groupCode', async (req, res) => {
 router.post('/:groupCode/upload', (req, res) => {
 	if (!req.user) return res.redirect('../');
 	imgMulter.upload(req, res, async (error) => {
-		console.log(req.body);
 		if (error) return res.send({error});
 		let result = await groupManager.addPhoto(req);
 		res.send(result);

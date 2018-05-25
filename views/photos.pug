@@ -45,7 +45,7 @@ block content
 							p.fs-timeline-item-description 
 								br
 								each photo in dates.allPhotosOnSameDay[i]
-									img.img-timeline(src=photo.source style="height: 150px" data-title=photo.title data-caption=photo.caption data-date=new Date(photo.date).toLocaleDateString() data-author=photo.author.username)
+									img.img-timeline(src=photo.source, style="height: 150px", data-title=photo.title, data-caption=(photo.caption ? photo.caption : "null"), data-date=new Date(photo.date).toLocaleDateString(), data-author=photo.author.username)
 		else
 			h1
 			h2.text-center No photo was uploaded
